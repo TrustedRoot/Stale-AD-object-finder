@@ -118,7 +118,7 @@ Do{
     while(!$Searchbase){
         #Prompt user for OU searchbase, validate input is X.500 compliant.
         try{
-            $Searchbase = Read-HostSpecial -Prompt "Enter OU searchbase" -Title "OU Searchbase" -ValidatePattern '(..=)(?<Name>.*?)(?<!\\),(?<Path>.*)' -PromptColor Green -ErrorAction Ignore
+            $Searchbase = Read-HostSpecial -Prompt "Enter the Distingusihed Name of the OU to search" -Title "OU Searchbase" -ValidatePattern '(..=)(?<Name>.*?)(?<!\\),(?<Path>.*)' -PromptColor Green -ErrorAction Ignore
         }
         catch{
             Write-Host "ERROR : Searchbase must be the Distingushed Name of the OU (X.500 Directory Specification)." -ForegroundColor Red
