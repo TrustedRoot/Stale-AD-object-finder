@@ -167,13 +167,14 @@ Do{
                 Enabled=$($User.Enabled)
                 CreateDate=($($User.Created)).toString("MM/dd/yyyy")
                 LastLogonDate=$($User.LastLogonDate)
+                PasswordNeverExpires=$($User.PasswordNeverExpires)
                 PasswordLastSet=$($User.PasswordLastSet).toString("MM/dd/yyyy")
+                PasswordExpired=$($User.PasswordExpired)
             }
             $StaleObjects += $UserInfo
         }
     }
 
-    #Close the progress bar
     Write-Progress -Id 1 -Activity "Gathering stale user information" -Completed
     $StaleCount = $StaleObjects.Count
 
