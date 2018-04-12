@@ -154,7 +154,7 @@ Do{
         Write-Progress -Id 1 -Activity "Gathering stale user information" -Status "Processing user $i of $($UserObjects.Count)" -PercentComplete $Percent 
         Start-Sleep -Milliseconds 25
         #If the user has not changed their password in the last 180 days, let's collect some info on them.
-        if($User.PasswordLastSet -le ((Get-Date).AddDays(-10))){
+        if($User.PasswordLastSet -le ((Get-Date).AddDays(-180))){
             $UserInfo = @()
             $UserInfo += New-Object psobject -Property @{
                 Name=$($User.Name)
