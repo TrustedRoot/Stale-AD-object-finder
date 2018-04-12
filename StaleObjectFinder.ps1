@@ -155,6 +155,12 @@ Do{
         Start-Sleep -Milliseconds 25
         #If the user has not changed their password in the last 180 days, let's collect some info on them.
         if($User.PasswordLastSet -le ((Get-Date).AddDays(-180))){
+            if($User.PasswordLastSet){
+                $PasswordLastSet = ($User.PasswordLastSet).toString("MM/dd/yyyy")
+            }
+            if($User.LastLogonDate){
+                $LastLogonDate = ($User.LastLogonDate).toString("MM/dd/yyyy")
+            }
             $UserInfo = @()
             $UserInfo += New-Object psobject -Property @{
                 Name=$($User.Name)
@@ -166,9 +172,9 @@ Do{
                 Manager=$($User.Manager)
                 Enabled=$($User.Enabled)
                 CreateDate=($($User.Created)).toString("MM/dd/yyyy")
-                LastLogonDate=$($User.LastLogonDate)
+                LastLogonDate=$($LastLogonDate)
                 PasswordNeverExpires=$($User.PasswordNeverExpires)
-                PasswordLastSet=$($User.PasswordLastSet).toString("MM/dd/yyyy")
+                PasswordLastSet=$($PasswordLastSet)
                 PasswordExpired=$($User.PasswordExpired)
             }
             $StaleObjects += $UserInfo
@@ -182,7 +188,7 @@ Do{
     $Export = [Microsoft.VisualBasic.Interaction]::MsgBox("Found $StaleCount stale objects. Export the report?", "YesNo", "Stale objects found")
     if($Export -eq 'Yes'){
         $Path = Get-SaveAsPath
-        $StaleObjects | Select-Object "Name","Username","Email","Phone","Office","Department","Manager","Enabled","CreateDate","LastLogonDate","PasswordLastSet" | Export-Csv $Path -NoTypeInformation
+        $StaleObjects | Select-Object "Name","Username","Email","Phone","Office","Department","Manager","Enabled","CreateDate","LastLogonDate","PasswordNeverExpires","PasswordLastSet","PasswordExpired" | Export-Csv $Path -NoTypeInformation
     }
 
     #Prompt the user to run again
