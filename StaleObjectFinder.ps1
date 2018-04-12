@@ -193,7 +193,7 @@ Do{
         }
     }
     else{
-        $Export = [Microsoft.VisualBasic.Interaction]::MsgBox("No stale objects found.", "Okay", "Results")
+        $Export = [Microsoft.VisualBasic.Interaction]::MsgBox("No stale objects found.", 0, "Results")
     }
 
     #Prompt the user to run again
