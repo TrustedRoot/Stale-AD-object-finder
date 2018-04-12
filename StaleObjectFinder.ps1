@@ -184,11 +184,16 @@ Do{
     Write-Progress -Id 1 -Activity "Gathering stale user information" -Completed
     $StaleCount = $StaleObjects.Count
 
-    #Prompt the user to export the report
-    $Export = [Microsoft.VisualBasic.Interaction]::MsgBox("Found $StaleCount stale objects. Export the report?", "YesNo", "Stale objects found")
-    if($Export -eq 'Yes'){
-        $Path = Get-SaveAsPath
-        $StaleObjects | Select-Object "Name","Username","Email","Phone","Office","Department","Manager","Enabled","CreateDate","LastLogonDate","PasswordNeverExpires","PasswordLastSet","PasswordExpired" | Export-Csv $Path -NoTypeInformation
+    #If stale objects found, prompt the user to export the report
+    if($StaleCount -ge 1){
+        $Export = [Microsoft.VisualBasic.Interaction]::MsgBox("Found $StaleCount stale objects. Export the report?", "YesNo", "Results")
+        if($Export -eq 'Yes'){
+            $Path = Get-SaveAsPath
+            $StaleObjects | Select-Object "Name","Username","Email","Phone","Office","Department","Manager","Enabled","CreateDate","LastLogonDate","PasswordNeverExpires","PasswordLastSet","PasswordExpired" | Export-Csv $Path -NoTypeInformation
+        }
+    }
+    else{
+        $Export = [Microsoft.VisualBasic.Interaction]::MsgBox("No stale objects found.", "Okay", "Results")
     }
 
     #Prompt the user to run again
